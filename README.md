@@ -1,103 +1,95 @@
-### Enrollment Management System ###
+# Flask Enrollment System
 
-### Overview ####
-- The Enrollment Management System is a web application designed to manage user registrations, logins, and profiles with integration into a MySQL database. It allows users to register, log in, view and update their profiles, and see their enrolled courses.
+The Flask Enrollment System is a web application built using Flask, allowing users to register, login, enroll in courses, and interact with API endpoints to retrieve user and course information.
 
-### Features ###
-- User Registration: Users can register by providing their personal details including username, password, email, and other personal information.
+## Overview
 
-- User Login: Registered users can log in with their username and password.
+The system provides a user-friendly interface for managing user registration, authentication, and course enrollment. Users can register with their details, log in securely, view their profile information, and enroll in available courses. Administrators can manage user accounts, course details, and view enrollment statistics.
 
-- User Profile: Logged-in users can view their profile and update certain personal information.
+## Setup
 
-- Enrolled Students List: Users can view a list of enrolled students along with the courses they are enrolled in.
+1. **Install Dependencies:** Ensure you have Python installed on your system. Then, install the required Python packages:
 
-### Technology Stack ###
-- Backend Framework: Flask
-- Database: MySQL
-- Frontend: HTML templates (rendered using Flask's render_template method)
-- APIs: RESTful API using flask_restful
-- Session Management: Flask session
+   ```bash
+   pip install Flask Flask-MySQLdb flask-restful
+   ```
 
+2. **Database Setup:** Make sure you have MySQL installed and running. Create a MySQL database named `enrollment` and execute the following SQL queries to create the required tables:
 
-### Installation ###
+   ```sql
+   -- Table for storing user information
+   CREATE TABLE users (
+       user_id INT AUTO_INCREMENT PRIMARY KEY,
+       username VARCHAR(50) UNIQUE NOT NULL,
+       password VARCHAR(255) NOT NULL,
+       email VARCHAR(100) NOT NULL,
+       first_name VARCHAR(50) NOT NULL,
+       middle_initial VARCHAR(1),
+       last_name VARCHAR(50) NOT NULL,
+       date_of_birth DATE,
+       address VARCHAR(255),
+       city VARCHAR(50),
+       country VARCHAR(50),
+       postal_code VARCHAR(20),
+       phone_number VARCHAR(20)
+   );
 
-1. Clone the repository:
-- git clone https://github.com/Unknown-UK030215/REST_CRUD.git
+   -- Table for storing course information
+   CREATE TABLE courses (
+       course_id INT AUTO_INCREMENT PRIMARY KEY,
+       name VARCHAR(100) NOT NULL,
+       description TEXT
+   );
 
-- cd REST_CRUD
+   -- Table for storing enrollments
+   CREATE TABLE enrollments (
+       enrollment_id INT AUTO_INCREMENT PRIMARY KEY,
+       username VARCHAR(50) NOT NULL,
+       course_id INT NOT NULL,
+       grade VARCHAR(2),
+       status VARCHAR(10) DEFAULT 'active',
+       FOREIGN KEY (username) REFERENCES users(username),
+       FOREIGN KEY (course_id) REFERENCES courses(course_id)
+   );
+   ```
 
-2. Create a virtual environment and activate it:
-- python -m venv enrollment
-- source enrollment/bin/activate  # On Windows use `venv\Scripts\activate`
+3. **Configure Flask App:** In the `app.py` file, configure the Flask app with your MySQL credentials:
 
-3. Install the dependencies:
-- pip install -r requirements.txt
+   ```python
+   app.config["MYSQL_HOST"] = "localhost"
+   app.config["MYSQL_USER"] = "your_username"
+   app.config["MYSQL_PASSWORD"] = "your_password"
+   app.config["MYSQL_DB"] = "enrollment"
+   ```
 
-4. Set up the MySQL database:
+4. **Run the Flask App:** Start the Flask app by running the following command:
 
-- Ensure you have MySQL installed and running.
-- Create a database named enrollment.
-- Run the following SQL script to create the required tables:
+   ```bash
+   python app.py
+   ```
 
-CREATE DATABASE enrollment;
-USE enrollment;
+## Usage
 
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(64) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    first_name VARCHAR(50),
-    middle_initial CHAR(1),
-    last_name VARCHAR(50),
-    date_of_birth DATE,
-    address VARCHAR(255),
-    city VARCHAR(100),
-    country VARCHAR(100),
-    postal_code VARCHAR(20),
-    phone_number VARCHAR(20)
-);
+- **Registration:** Visit `/register` to register new users.
+- **Login:** Access `/login` to log in to the system.
+- **Profile:** Navigate to `/profile` to view user profile details.
+- **Enrollment:** Go to `/enroll` to enroll in available courses.
+- **Logout:** Visit `/logout` to log out from the system.
 
-CREATE TABLE courses (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
-);
+## API Endpoints
 
-CREATE TABLE enrollments (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50),
-    course_id INT,
-    FOREIGN KEY (username) REFERENCES users(username),
-    FOREIGN KEY (course_id) REFERENCES courses(id)
-);
+- **User API:** 
+  - **Endpoint:** `/api/user/<username>` (GET)
+  - **Description:** Retrieve user information by username.
+  
+- **Course API:** 
+  - **Endpoint:** `/api/course/<course_id>` (GET)
+  - **Description:** Retrieve course information by course ID.
+  
+- **User Enrollment API:** 
+  - **Endpoint:** `/api/enrollment/<username>` (GET)
+  - **Description:** Retrieve course enrollments for a specific user.
 
+## Contributing
 
-5. Configure the application:
-
-Update the database configuration in app.py:
-- app.config["MYSQL_HOST"] = "localhost"
-- app.config["MYSQL_USER"] = "root"
-- app.config["MYSQL_PASSWORD"] = "your_mysql_password"
-- app.config["MYSQL_DB"] = "enrollment"
-
-6. Run the application
-- python app.py
-- The application will be accessible at http://127.0.0.1:5000/.
-
-### Usage ###
-### Register ###
-- Navigate to http://127.0.0.1:5000/register to access the registration page.
-
-- Fill in the required details and submit the form to 
-create a new account.
-
-### Login ###
-- Navigate to http://127.0.0.1:5000/ to access the login page.
-- Enter your username and password to log in.
-
-### Profile ###
-- Once logged in, you will be redirected to your profile page.
-- Here, you can view and update your personal information.
-- You can also see a list of students enrolled in various courses.
-
+Contributions are welcome! If you have any suggestions, improvements, or bug fixes, feel free to submit issues or pull requests to enhance the project.
