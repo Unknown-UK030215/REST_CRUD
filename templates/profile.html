@@ -11,7 +11,7 @@
         }
         .profile-container {
             margin: auto;
-            width: 800px;
+            width: 80%;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
@@ -21,75 +21,67 @@
             margin-bottom: 20px;
             text-align: center;
         }
-        .profile-info {
-            margin-bottom: 30px;
-        }
-        .profile-info ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        .profile-info ul li {
-            margin-bottom: 10px;
-        }
-        .profile-actions {
-            text-align: center;
-        }
-        .profile-actions a {
-            margin-right: 20px;
-            text-decoration: none;
-            color: #333;
-            padding: 8px 16px;
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
             border-radius: 4px;
-            background-color: #f0f0f0;
+            cursor: pointer;
+            padding: 10px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            margin: 5px;
         }
-        .profile-actions a:hover {
-            background-color: #ddd;
+        .button:hover {
+            background-color: #45a049;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
         }
     </style>
 </head>
 <body>
     <div class="profile-container">
         <h2>User Profile</h2>
-        <div class="profile-info">
-            <ul>
-                <li><strong>Username:</strong> {{ user.username }}</li>
-                <li><strong>Email:</strong> {{ user.email }}</li>
-                <li><strong>First Name:</strong> {{ user.first_name }}</li>
-                <li><strong>Last Name:</strong> {{ user.last_name }}</li>
-                <li><strong>Date of Birth:</strong> {{ user.date_of_birth }}</li>
-                <li><strong>Address:</strong> {{ user.address }}</li>
-                <li><strong>City:</strong> {{ user.city }}</li>
-                <li><strong>Country:</strong> {{ user.country }}</li>
-                <li><strong>Postal Code:</strong> {{ user.postal_code }}</li>
-                <li><strong>Phone Number:</strong> {{ user.phone_number }}</li>
-                <li><strong>Registration Date:</strong> {{ user.registration_date }}</li>
-            </ul>
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>First Name:</strong> {{ user.first_name }}</p>
+        <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+
+        <div class="button-container">
+            <a href="{{ url_for('view_users') }}" class="button">View Users</a>
+            <a href="{{ url_for('logout') }}" class="button">Logout</a>
         </div>
-        <div class="profile-actions">
-            <a href="/courses">View Courses</a>
-            <a href="/enroll">Enroll</a>
-            <a href="/enrolled_courses">Enrolled Courses</a>
-            <!-- Add more action links as needed -->
-        </div>
-        <h2>Enrolled Students</h2>
-        <table>
-            <tr>
-                <th>Username</th>
-                <th>Email</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Course</th>
-            </tr>
-            {% for student in enrolled_students %}
-            <tr>
-                <td>{{ student.username }}</td>
-                <td>{{ student.email }}</td>
-                <td>{{ student.first_name }}</td>
-                <td>{{ student.last_name }}</td>
-                <td>{{ student.course_name }}</td>
-            </tr>
-            {% endfor %}
-        </table>
     </div>
 </body>
 </html>
