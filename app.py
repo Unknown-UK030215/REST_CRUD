@@ -13,7 +13,7 @@ app.secret_key = os.urandom(24)
 
 app.config["MYSQL_HOST"] = "localhost"
 app.config["MYSQL_USER"] = "root"
-app.config["MYSQL_PASSWORD"] = "giana"
+app.config["MYSQL_PASSWORD"] = "santos"
 app.config["MYSQL_DB"] = "enrollment"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
